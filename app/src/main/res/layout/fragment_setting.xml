@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingFragment">
+
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="事件"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_event"
+        app:layout_constraintEnd_toEndOf="@+id/textview10"
+        app:layout_constraintStart_toStartOf="@+id/textview10"
+        app:layout_constraintTop_toTopOf="@+id/et_event" />
+
+    <EditText
+        android:id="@+id/et_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="xx倒计时"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/et_note"
+        app:layout_constraintEnd_toEndOf="@+id/et_note"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/et_note"
+        app:layout_constraintTop_toBottomOf="@+id/et_finalday" />
+
+    <EditText
+        android:id="@+id/et_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:text="注意xxx和xxx。"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_info_ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textview10"
+        app:layout_constraintTop_toBottomOf="@+id/et_event" />
+
+    <TextView
+        android:id="@+id/textview10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="备注"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_note"
+        app:layout_constraintEnd_toStartOf="@+id/et_note"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_note" />
+
+    <EditText
+        android:id="@+id/et_finalday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:focusableInTouchMode="false"
+        android:inputType="textPersonName"
+        android:text="2022-01-01 00:00:00"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/et_event"
+        app:layout_constraintEnd_toEndOf="@+id/et_event"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/et_event"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="日期"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_finalday"
+        app:layout_constraintEnd_toEndOf="@+id/textView6"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/et_finalday" />
+
+    <Button
+        android:id="@+id/btn_info_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="确认"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_info_cancel" />
+
+    <Button
+        android:id="@+id/btn_info_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="取消"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_info_ok"
+        app:layout_constraintEnd_toStartOf="@+id/btn_info_ok"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_info_ok" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

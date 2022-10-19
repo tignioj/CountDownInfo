@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondFragment">
+
+
+    <Button
+        android:id="@+id/button_app_setting_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="确认"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBoxWeather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="天气预报"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBoxShowSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="显示秒数"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxNgihtMode"
+        app:layout_constraintStart_toStartOf="@+id/spinner_area"
+        app:layout_constraintTop_toTopOf="@+id/checkBoxNgihtMode" />
+
+    <EditText
+        android:id="@+id/et_province"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="4"
+        android:hint="输入省份，如北京"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="北京"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/checkBoxWeather"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxWeather" />
+
+    <Spinner
+        android:id="@+id/spinner_area"
+        android:layout_width="120sp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_province"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextAPIKey"
+        app:layout_constraintTop_toTopOf="@+id/et_province" />
+
+    <Button
+        android:id="@+id/btn_getArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取城区"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner_area"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextAPIKey"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/spinner_area"
+        app:layout_constraintTop_toTopOf="@+id/spinner_area"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请选择城区"
+        app:layout_constraintStart_toStartOf="@+id/et_province"
+        app:layout_constraintTop_toBottomOf="@+id/et_province" />
+
+    <TextView
+        android:id="@+id/tv_current_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="当前已选择：未选择"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/spinner_area"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="时钟字体"
+        app:layout_constraintBottom_toTopOf="@+id/textView8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <SeekBar
+        android:id="@+id/seekBarClockTextSize"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:max="10"
+        android:progress="3"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="事件字体"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="备注字体"
+        app:layout_constraintBottom_toTopOf="@+id/button_app_setting_ok"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="倒数字体"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <SeekBar
+        android:id="@+id/seekBarCountDayTextSize"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:max="10"
+        android:progress="3"
+        app:layout_constraintBottom_toBottomOf="@+id/textView8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+    <SeekBar
+        android:id="@+id/seekBarEventTextSize"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:max="10"
+        android:progress="3"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+    <SeekBar
+        android:id="@+id/seekBarNoteTextSize"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:max="10"
+        android:progress="3"
+        app:layout_constraintBottom_toBottomOf="@+id/textView7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/textViewPreview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="字体预览AaBbCc"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxShowSecond" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.62" />
+
+    <CheckBox
+        android:id="@+id/checkBoxNgihtMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="夜间模式"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <CheckBox
+        android:id="@+id/checkBoxScreenAlwaysOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="屏幕常亮"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxShowSecond"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxShowSecond"
+        app:layout_constraintTop_toTopOf="@+id/checkBoxShowSecond" />
+
+    <EditText
+        android:id="@+id/editTextTextAPIKey"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16sp"
+        android:layout_marginEnd="16sp"
+        android:ems="10"
+        android:hint="和风天气APIKey"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxWeather"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxWeather"
+        app:layout_constraintTop_toTopOf="@+id/checkBoxWeather"
+        app:layout_constraintVertical_bias="0.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FirstFragment">
+
+
+    <TextClock
+        android:id="@+id/tv_update_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="@string/text_clock_12h_format"
+        android:format24Hour="@string/text_clock_24h_format"
+        android:text="00:00:00 早上"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toTopOf="@+id/textClock"
+        app:layout_constraintEnd_toEndOf="@+id/textClock"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/textClock"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextClock
+        android:id="@+id/textClock"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:format12Hour="yyyy-MMM-d EEEE"
+        android:format24Hour="yyyy-MMM-d EEEE"
+        android:text="2022-10-18"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_event"
+        app:layout_constraintEnd_toEndOf="@+id/tv_event"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/tv_event"
+        app:layout_constraintTop_toBottomOf="@+id/tv_update_time" />
+
+    <TextView
+        android:id="@+id/tv_city_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16px"
+        android:text="北京"
+        app:layout_constraintBottom_toTopOf="@+id/tv_weatherdata"
+        app:layout_constraintStart_toStartOf="@+id/tv_weatherdata" />
+
+    <TextView
+        android:id="@+id/tv_weatherdata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="天气预报功能\n需要指定和风天气APIKey\n如不需要可在设置关闭"
+        android:paddingLeft="16px"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_countdown_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="666"
+        android:textSize="196sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tv_saying"
+        app:layout_constraintEnd_toEndOf="@+id/tv_saying"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/tv_saying"
+        app:layout_constraintTop_toBottomOf="@+id/tv_event" />
+
+    <TextView
+        android:id="@+id/tv_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="距离xx还剩余"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_countdown_day"
+        app:layout_constraintEnd_toEndOf="@+id/tv_countdown_day"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/tv_countdown_day"
+        app:layout_constraintTop_toBottomOf="@+id/textClock" />
+
+    <TextView
+        android:id="@+id/tv_saying"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="学无止境"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_city_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_countdown_day" />
+
+    <TextView
+        android:id="@+id/tvLastUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2022-02-07T02:35+8:00"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_city_name"
+        app:layout_constraintStart_toEndOf="@+id/tv_city_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_city_name" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

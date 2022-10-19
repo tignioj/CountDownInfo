@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">CountDownInfo</string>
+    <string name="action_settings">Data Settings</string>
+    <string name="action_app_settings">App Setting</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">Countdown Day</string>
+    <string name="second_fragment_label">App Setting</string>
+    <string name="fragment_setting_label">Countdown Setting</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="fullscreen">FullScreen Mode</string>
+
+<!--    format-->
+<!--    clock with second-->
+    <string name="text_clock_12h_format">h:mm:ss a</string>
+    <string name="text_clock_24h_format">kk:mm:ss</string>
+
+    <!--    clock with no second-->
+    <string name="text_clock_12h_format_no_second">h:mm a</string>
+    <string name="text_clock_24h_format_no_second">kk:mm</string>
+
+    <string name="heweatherapi">https://devapi.qweather.com</string>
+<!--    <string name="heweatherapi">http://192.168.2.180:8090</string>-->
+    <string name="geoapi">https://geoapi.qweather.com</string>
+<!--    <string name="geoapi">http://192.168.2.180:8090</string>-->
+</resources>
