@@ -11,6 +11,8 @@ public class AppSetting {
 
    // 字体
    public int clockTextSize;
+   public int dateTextSize;
+   public int weatherTextSize;
    public int countDownTextSize;
    public int eventTextSize;
    public int noteTextSize;
@@ -29,7 +31,7 @@ public class AppSetting {
 
    public AppSetting(boolean showWeather, boolean showSecond, boolean screenAlwaysOn,
                      boolean nightMode, String cityName, String cityCode,
-                     int clockTextSize, int countDownTextSize, int eventTextSize, int noteTextSize, String heWeatherAPIKey) {
+                     int clockTextSize, int dateTextSize,int weatherTextSize, int countDownTextSize, int eventTextSize, int noteTextSize, String heWeatherAPIKey) {
       this.showWeather = showWeather;
       this.showSecond = showSecond;
       this.screenAlwaysOn = screenAlwaysOn;
@@ -37,6 +39,8 @@ public class AppSetting {
       this.cityName = cityName;
       this.cityCode = cityCode;
       this.clockTextSize = clockTextSize;
+      this.dateTextSize = dateTextSize;
+      this.weatherTextSize = weatherTextSize;
       this.countDownTextSize = countDownTextSize;
       this.eventTextSize = eventTextSize;
       this.noteTextSize = noteTextSize;

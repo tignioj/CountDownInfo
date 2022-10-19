@@ -96,6 +96,7 @@ public class MyViewModel extends AndroidViewModel {
 
         edit.putInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_COUNTDOWN, as.countDownTextSize);
         edit.putInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_CLOCK, as.clockTextSize);
+        edit.putInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_DATE, as.dateTextSize);
         edit.putInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_EVENT, as.eventTextSize);
         edit.putInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_NOTE, as.noteTextSize);
 
@@ -104,23 +105,26 @@ public class MyViewModel extends AndroidViewModel {
 
     private AppSetting getAppSettingFromSHDB() {
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-        boolean showSecond = mPrefs.getBoolean(MyConfig.PERSONAL_SHP_CONFIG_KEY__APP_SETTING_SHOW_SECOND, true);
-        boolean showWeather = mPrefs.getBoolean(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_ENABLE_WEATHER, false);
-        String cityCode = mPrefs.getString(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_CITY_CODE, "101010100");
-        String cityName = mPrefs.getString(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_CITY_NAME, "北京");
-        String heWeatherAPIKey = mPrefs.getString(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_HE_WEATHER_APIKEY, null);
+        AppSetting defaultAppSetting = getDefaultAppSetting();
+        boolean showSecond = mPrefs.getBoolean(MyConfig.PERSONAL_SHP_CONFIG_KEY__APP_SETTING_SHOW_SECOND, defaultAppSetting.isShowSecond());
+        boolean showWeather = mPrefs.getBoolean(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_ENABLE_WEATHER, defaultAppSetting.isShowWeather());
+        String cityCode = mPrefs.getString(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_CITY_CODE, defaultAppSetting.getCityCode());
+        String cityName = mPrefs.getString(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_CITY_NAME, defaultAppSetting.getCityName());
+        String heWeatherAPIKey = mPrefs.getString(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_HE_WEATHER_APIKEY, defaultAppSetting.getHeWeatherAPIKey());
 
-        boolean screenAlawaysOn = mPrefs.getBoolean(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_SCREEN_ALWAYS_ON, false);
-        boolean nightMode = mPrefs.getBoolean(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_IS_NIGHT_MODE, false);
+        boolean screenAlawaysOn = mPrefs.getBoolean(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_SCREEN_ALWAYS_ON, defaultAppSetting.isScreenAlwaysOn());
+        boolean nightMode = mPrefs.getBoolean(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_IS_NIGHT_MODE, defaultAppSetting.isNightMode());
 
         // 字体
-        int clockTextSize = mPrefs.getInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_CLOCK, 60);
-        int noteTextSize = mPrefs.getInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_NOTE, 24);
-        int eventTextSize = mPrefs.getInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_EVENT, 40);
-        int countDownTextSize = mPrefs.getInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_COUNTDOWN, 196);
+        int clockTextSize = mPrefs.getInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_CLOCK, defaultAppSetting.clockTextSize);
+        int dateTextSize = mPrefs.getInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_DATE, defaultAppSetting.dateTextSize);
+        int weatherTextSize = mPrefs.getInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_WEATHER, defaultAppSetting.weatherTextSize);
+        int noteTextSize = mPrefs.getInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_NOTE, defaultAppSetting.noteTextSize);
+        int eventTextSize = mPrefs.getInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_EVENT, defaultAppSetting.eventTextSize);
+        int countDownTextSize = mPrefs.getInt(MyConfig.PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_COUNTDOWN, defaultAppSetting.countDownTextSize);
 
-        AppSetting as = new AppSetting(showWeather, showSecond, screenAlawaysOn, nightMode,
-                cityName, cityCode,clockTextSize, countDownTextSize, eventTextSize,noteTextSize, heWeatherAPIKey);
+        AppSetting as = new AppSetting(showWeather, showSecond, screenAlawaysOn, nightMode, cityName, cityCode,
+                clockTextSize, dateTextSize, weatherTextSize,countDownTextSize, eventTextSize,noteTextSize, heWeatherAPIKey);
         return as;
     }
 
@@ -216,6 +220,6 @@ public class MyViewModel extends AndroidViewModel {
 
 
     public AppSetting getDefaultAppSetting() {
-        return new AppSetting(true, true, false, false, "北京", "101010100", 60, 196, 40, 24, null);
+        return new AppSetting(true, true, false, false, "北京", "101010100", 60, 24,12,196, 40, 24, null);
     }
 }

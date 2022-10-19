@@ -37,6 +37,7 @@ public class FirstFragment extends Fragment {
 
         MyViewModel myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
         LiveData<List<WeatherDay>> weathers = myViewModel.getWeathers();
+
         weathers.observe(getViewLifecycleOwner(), weatherDays -> {
             for (WeatherDay u : weatherDays) {
                 binding.tvWeatherdata.setText(u.toString());
@@ -54,14 +55,13 @@ public class FirstFragment extends Fragment {
 
         LiveData<String> lastUpdate = myViewModel.getLastUpdate();
         lastUpdate.observe(getViewLifecycleOwner(), str-> {
-            AppSetting value = myViewModel.getAppSetting().getValue();
-            if (value!=null) {
-                binding.tvLastUpdate.setText(str);
-            }
+            binding.tvLastUpdate.setText(str);
         });
 
         LiveData<AppSetting> appSetting = myViewModel.getAppSetting();
+        // 设置变动时候更新UI
         appSetting.observe(getViewLifecycleOwner(), as -> {
+            // 如果天气开启
             if (!as.isShowWeather()) {
                 weathers.removeObservers(getViewLifecycleOwner());
                 binding.tvWeatherdata.setVisibility(View.GONE);
@@ -89,7 +89,9 @@ public class FirstFragment extends Fragment {
 
             // 调整字体
             binding.tvUpdateTime.setTextSize(as.clockTextSize);
+            binding.tvDateClock.setTextSize(as.dateTextSize);
             binding.tvEvent.setTextSize(as.eventTextSize);
+            binding.tvWeatherdata.setTextSize(as.weatherTextSize);
             binding.tvSaying.setTextSize(as.noteTextSize);
             binding.tvCountdownDay.setTextSize(as.countDownTextSize);
 

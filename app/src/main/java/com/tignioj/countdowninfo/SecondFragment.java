@@ -1,6 +1,5 @@
 package com.tignioj.countdowninfo;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -18,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.tignioj.config.MyConfig;
 import com.tignioj.countdowninfo.databinding.FragmentSecondBinding;
 import com.tignioj.entity.AppSetting;
 import com.tignioj.entity.MyGeo;
@@ -33,15 +31,24 @@ import com.tignioj.entity.MyGeoBean;
 import com.tignioj.util.MyWeatherUtil;
 import com.tignioj.viewmodel.MyViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class SecondFragment extends Fragment {
 
     private FragmentSecondBinding binding;
-    private AppSetting appSetting;
+    AppSetting nAppSetting;
+
     final String TAG = "SecondFragment";
+
+
+    // seekbar参数
+    int step = 1;
+    int max = 250;
+    int min = 0;
+    int maxval = (max - min) / step;
+
+
+
 
     @Override
     public View onCreateView(
@@ -53,32 +60,73 @@ public class SecondFragment extends Fragment {
 
 
         return binding.getRoot();
-
     }
+
+     private void loadAppSetting(AppSetting appSetting) {
+         binding.checkBoxWeather.setChecked(appSetting.isShowWeather());
+         binding.checkBoxShowSecond.setChecked(appSetting.isShowSecond());
+         binding.etProvince.setText(appSetting.getCityName());
+         binding.checkBoxNgihtMode.setChecked(appSetting.isNightMode());
+         binding.tvCurrentCity.setText("当前已选择:" + appSetting.getCityCode() + ":" + appSetting.getCityName());
+         binding.checkBoxScreenAlwaysOn.setChecked(appSetting.isScreenAlwaysOn());
+         binding.editTextTextAPIKey.setText(appSetting.getHeWeatherAPIKey());
+
+
+         binding.seekBarClockTextSize.setMax(maxval);
+         binding.seekBarNoteTextSize.setMax(maxval);
+         binding.seekBarDateTextSize.setMax(maxval);
+         binding.seekBarWeatherTextSize.setMax(maxval);
+         binding.seekBarEventTextSize.setMax(maxval);
+         binding.seekBarCountDayTextSize.setMax(maxval);
+
+         binding.seekBarClockTextSize.setProgress(appSetting.clockTextSize);
+         binding.seekBarCountDayTextSize.setProgress(appSetting.countDownTextSize);
+         binding.seekBarDateTextSize.setProgress(appSetting.dateTextSize);
+         binding.seekBarWeatherTextSize.setProgress(appSetting.weatherTextSize);
+         binding.seekBarEventTextSize.setProgress(appSetting.eventTextSize);
+         binding.seekBarNoteTextSize.setProgress(appSetting.noteTextSize);
+
+     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MyViewModel myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
-        appSetting = myViewModel.getAppSetting().getValue();
+        
+        // 从MyViewModel拿出来的数据直接修改，实际上修改的是全局的数据
+        AppSetting globalAppSetting = myViewModel.getAppSetting().getValue();
+
 
         // 加载数据===========================================
-        if (appSetting != null) {
-            binding.checkBoxWeather.setChecked(appSetting.isShowWeather());
-            binding.checkBoxShowSecond.setChecked(appSetting.isShowSecond());
-            binding.etProvince.setText(appSetting.getCityName());
-            binding.checkBoxNgihtMode.setChecked(appSetting.isNightMode());
-            binding.tvCurrentCity.setText("当前已选择:" + appSetting.getCityCode() + ":" + appSetting.getCityName());
-            binding.checkBoxScreenAlwaysOn.setChecked(appSetting.isScreenAlwaysOn());
-            binding.editTextTextAPIKey.setText(appSetting.getHeWeatherAPIKey());
+        if (globalAppSetting != null) {
+            loadAppSetting(globalAppSetting);
+            nAppSetting = new AppSetting();
+            nAppSetting.dateTextSize = globalAppSetting.dateTextSize;
+            nAppSetting.weatherTextSize = globalAppSetting.dateTextSize;
+            nAppSetting.clockTextSize = globalAppSetting.clockTextSize;
+            nAppSetting.countDownTextSize = globalAppSetting.countDownTextSize;
+            nAppSetting.eventTextSize = globalAppSetting.eventTextSize;
+            nAppSetting.noteTextSize = globalAppSetting.noteTextSize;
+
+            nAppSetting.setShowSecond(globalAppSetting.isShowSecond());
+            nAppSetting.setShowWeather(globalAppSetting.isShowWeather());
+            nAppSetting.setNightMode(globalAppSetting.isNightMode());
+            nAppSetting.setScreenAlwaysOn(globalAppSetting.isScreenAlwaysOn());
+
+            nAppSetting.setCityCode(globalAppSetting.getCityCode());
+            nAppSetting.setCityName(globalAppSetting.getCityName());
+            nAppSetting.setHeWeatherAPIKey(globalAppSetting.getHeWeatherAPIKey());
         } else {
-            appSetting = myViewModel.getDefaultAppSetting();
+            nAppSetting = myViewModel.getDefaultAppSetting();
         }
 
         // 监听==============================================
-        binding.checkBoxShowSecond.setOnCheckedChangeListener((buttonView, isChecked) -> appSetting.setShowSecond(isChecked));
-        binding.checkBoxWeather.setOnCheckedChangeListener((buttonView, isChecked) -> appSetting.setShowWeather(isChecked));
-        binding.checkBoxNgihtMode.setOnCheckedChangeListener((buttonView, isChecked) -> appSetting.setNightMode(isChecked));
-        binding.checkBoxScreenAlwaysOn.setOnCheckedChangeListener((buttonView, isChecked) -> appSetting.setScreenAlwaysOn(isChecked));
+        binding.checkBoxShowSecond.setOnCheckedChangeListener((buttonView, isChecked) -> nAppSetting.setShowSecond(isChecked));
+        binding.checkBoxWeather.setOnCheckedChangeListener((buttonView, isChecked) -> nAppSetting.setShowWeather(isChecked));
+        binding.checkBoxNgihtMode.setOnCheckedChangeListener((buttonView, isChecked) -> nAppSetting.setNightMode(isChecked));
+        binding.checkBoxScreenAlwaysOn.setOnCheckedChangeListener((buttonView, isChecked) -> nAppSetting.setScreenAlwaysOn(isChecked));
+        binding.btnResetAppSetting.setOnClickListener(v-> {
+            loadAppSetting(myViewModel.getDefaultAppSetting());
+        });
         binding.etProvince.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -90,7 +138,7 @@ public class SecondFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                appSetting.setCityName(s.toString());
+                nAppSetting.setCityName(s.toString());
             }
         });
         binding.editTextTextAPIKey.addTextChangedListener(new TextWatcher() {
@@ -106,13 +154,11 @@ public class SecondFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                appSetting.setHeWeatherAPIKey(s.toString());
+                nAppSetting.setHeWeatherAPIKey(s.toString());
             }
         });
 
 //        final String geoUrl = "http://192.168.2.180:8090/geo";
-
-
         // 天气==========================
         binding.btnGetArea.setOnClickListener(v -> {
             String geoUrl = null;
@@ -151,8 +197,8 @@ public class SecondFragment extends Fragment {
                         binding.tvCurrentCity.setText("当前已选择:" + finalItems[position]);
                         if (finalMyGeos == null) return;
                         MyGeo geo = finalMyGeos.get(position);
-                        appSetting.setCityName(geo.getName());
-                        appSetting.setCityCode(geo.getId());
+                        nAppSetting.setCityName(geo.getName());
+                        nAppSetting.setCityCode(geo.getId());
                     }
 
                     @Override
@@ -167,13 +213,8 @@ public class SecondFragment extends Fragment {
 
 
         // 字体===========================
-        int step = 1;
-        int max = 250;
-        int min = 0;
         class MySeekBarListener implements SeekBar.OnSeekBarChangeListener {
             public String name;
-
-
             public MySeekBarListener(String name) {
                 this.name = name;
             }
@@ -185,30 +226,22 @@ public class SecondFragment extends Fragment {
                 binding.textViewPreview.setText(txt);
                 binding.textViewPreview.setTextSize(val);
                 switch (name) {
-                    case "时钟": appSetting.clockTextSize = val; break;
-                    case "倒计时": appSetting.countDownTextSize = val; break;
-                    case "事件": appSetting.eventTextSize = val; break;
-                    case "备注": appSetting.noteTextSize = val; break;
+                    case "时钟": nAppSetting.clockTextSize = val; break;
+                    case "倒计时": nAppSetting.countDownTextSize = val; break;
+                    case "事件": nAppSetting.eventTextSize = val; break;
+                    case "日期": nAppSetting.dateTextSize= val; break;
+                    case "天气": nAppSetting.weatherTextSize= val; break;
+                    case "备注": nAppSetting.noteTextSize = val; break;
                     default:break;
                 }
             }
-
             @Override public void onStartTrackingTouch(SeekBar seekBar) { }
-            @Override public void onStopTrackingTouch(SeekBar seekBar) { } }
-
-        int maxval = (max - min) / step;
-        binding.seekBarClockTextSize.setMax(maxval);
-        binding.seekBarNoteTextSize.setMax(maxval);
-        binding.seekBarEventTextSize.setMax(maxval);
-        binding.seekBarCountDayTextSize.setMax(maxval);
-
-        binding.seekBarClockTextSize.setProgress(appSetting.clockTextSize);
-        binding.seekBarCountDayTextSize.setProgress(appSetting.countDownTextSize);
-        binding.seekBarEventTextSize.setProgress(appSetting.eventTextSize);
-        binding.seekBarNoteTextSize.setProgress(appSetting.noteTextSize);
-
+            @Override public void onStopTrackingTouch(SeekBar seekBar) { }
+        }
         binding.seekBarClockTextSize.setOnSeekBarChangeListener(new MySeekBarListener("时钟"));
         binding.seekBarCountDayTextSize.setOnSeekBarChangeListener(new MySeekBarListener("倒计时"));
+        binding.seekBarDateTextSize.setOnSeekBarChangeListener(new MySeekBarListener("日期"));
+        binding.seekBarWeatherTextSize.setOnSeekBarChangeListener(new MySeekBarListener("天气"));
         binding.seekBarEventTextSize.setOnSeekBarChangeListener(new MySeekBarListener("事件"));
         binding.seekBarNoteTextSize.setOnSeekBarChangeListener(new MySeekBarListener("备注"));
 
@@ -216,8 +249,8 @@ public class SecondFragment extends Fragment {
 
         // 确认=========================================
         binding.buttonAppSettingOk.setOnClickListener(view12 -> {
-            myViewModel.updateAPpSetting(appSetting);
-            if (appSetting.isShowWeather()) {
+            myViewModel.updateAPpSetting(nAppSetting);
+            if (nAppSetting.isShowWeather()) {
                 myViewModel.updateWeathers();
             }
 //                NavHostFragment.findNavController(SecondFragment.this) .navigate(R.id.action_SecondFragment_to_FirstFragment);

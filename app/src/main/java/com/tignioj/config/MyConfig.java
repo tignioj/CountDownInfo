@@ -22,6 +22,8 @@ public class MyConfig {
    public static final String PERSONAL_SHP_CONFIG_KEY_COUNTDOWN_EVENT_TEXT = "PERSONAL_SHP_CONFIG_KEY_EVENT_TEXT";
    public static final String PERSONAL_SHP_CONFIG_KEY_COUNTDOWN_NOTES = "PERSONAL_SHP_CONFIG_KEY_NOTES";
    public static final String PERSONAL_SHP_CONFIG_KEY_APP_SETTING_HE_WEATHER_APIKEY = "PERSONAL_SHP_CONFIG_KEY_APP_SETTING_HE_WEATHER_APIKEY";
+    public static final String PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_DATE = "PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_DATE";
+   public static final String PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_WEATHER = "PERSONAL_SHP_CONFIG_KEY_APP_SETTING_TEXTSIZE_WEATHER";
 
-    //Shp文件End=============================================================
+   //Shp文件End=============================================================
 }
