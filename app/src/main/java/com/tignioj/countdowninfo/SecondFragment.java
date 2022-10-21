@@ -23,7 +23,6 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.tignioj.config.MyConfig;
 import com.tignioj.countdowninfo.databinding.FragmentSecondBinding;
 import com.tignioj.entity.AppSetting;
 import com.tignioj.entity.MyGeo;
@@ -32,6 +31,7 @@ import com.tignioj.util.MyWeatherUtil;
 import com.tignioj.viewmodel.MyViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SecondFragment extends Fragment {
 
@@ -48,8 +48,6 @@ public class SecondFragment extends Fragment {
     int maxval = (max - min) / step;
 
 
-
-
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -62,69 +60,74 @@ public class SecondFragment extends Fragment {
         return binding.getRoot();
     }
 
-     private void loadAppSetting(AppSetting appSetting) {
-         binding.checkBoxWeather.setChecked(appSetting.isShowWeather());
-         binding.checkBoxShowSecond.setChecked(appSetting.isShowSecond());
-         binding.etProvince.setText(appSetting.getCityName());
-         binding.checkBoxNgihtMode.setChecked(appSetting.isNightMode());
-         binding.tvCurrentCity.setText("当前已选择:" + appSetting.getCityCode() + ":" + appSetting.getCityName());
-         binding.checkBoxScreenAlwaysOn.setChecked(appSetting.isScreenAlwaysOn());
-         binding.editTextTextAPIKey.setText(appSetting.getHeWeatherAPIKey());
+    private void loadAppSetting(AppSetting appSetting) {
+        copyAppSetting(appSetting);
+
+        binding.checkBoxWeather.setChecked(appSetting.isShowWeather());
+        binding.checkBoxShowSecond.setChecked(appSetting.isShowSecond());
+        binding.etProvince.setText(appSetting.getCityName());
+        binding.checkBoxNgihtMode.setChecked(appSetting.isNightMode());
+        binding.tvCurrentCity.setText(appSetting.getCityName() != null ? "当前已选择:" + appSetting.getCityName() : "");
+        binding.checkBoxScreenAlwaysOn.setChecked(appSetting.isScreenAlwaysOn());
+        binding.editTextTextAPIKey.setText(appSetting.getHeWeatherAPIKey());
 
 
-         binding.seekBarClockTextSize.setMax(maxval);
-         binding.seekBarNoteTextSize.setMax(maxval);
-         binding.seekBarDateTextSize.setMax(maxval);
-         binding.seekBarWeatherTextSize.setMax(maxval);
-         binding.seekBarEventTextSize.setMax(maxval);
-         binding.seekBarCountDayTextSize.setMax(maxval);
+        binding.seekBarClockTextSize.setMax(maxval);
+        binding.seekBarNoteTextSize.setMax(maxval);
+        binding.seekBarDateTextSize.setMax(maxval);
+        binding.seekBarWeatherTextSize.setMax(maxval);
+        binding.seekBarEventTextSize.setMax(maxval);
+        binding.seekBarCountDayTextSize.setMax(maxval);
 
-         binding.seekBarClockTextSize.setProgress(appSetting.clockTextSize);
-         binding.seekBarCountDayTextSize.setProgress(appSetting.countDownTextSize);
-         binding.seekBarDateTextSize.setProgress(appSetting.dateTextSize);
-         binding.seekBarWeatherTextSize.setProgress(appSetting.weatherTextSize);
-         binding.seekBarEventTextSize.setProgress(appSetting.eventTextSize);
-         binding.seekBarNoteTextSize.setProgress(appSetting.noteTextSize);
+        binding.seekBarClockTextSize.setProgress(appSetting.clockTextSize);
+        binding.seekBarCountDayTextSize.setProgress(appSetting.countDownTextSize);
+        binding.seekBarDateTextSize.setProgress(appSetting.dateTextSize);
+        binding.seekBarWeatherTextSize.setProgress(appSetting.weatherTextSize);
+        binding.seekBarEventTextSize.setProgress(appSetting.eventTextSize);
+        binding.seekBarNoteTextSize.setProgress(appSetting.noteTextSize);
 
-     }
+        if (!nAppSetting.isShowWeather() || Objects.equals(null, nAppSetting.getHeWeatherAPIKey()) || Objects.equals("", nAppSetting.getHeWeatherAPIKey())) {
+            enableWeather(false);
+        } else {
+            enableWeather(true);
+        }
+
+    }
+
+    public void enableWeather(boolean b) {
+        nAppSetting.setShowWeather(b);
+        binding.etProvince.setEnabled(b);
+        binding.btnGetArea.setEnabled(b);
+        binding.spinnerArea.setEnabled(b);
+        if (b) {
+            binding.tvCurrentCity.setText(nAppSetting.getCityName() != null ? "当前已选择:" + nAppSetting.getCityName() : "");
+        } else {
+            binding.tvCurrentCity.setText("已关闭天气功能");
+        }
+    }
+
+    MyViewModel myViewModel;
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MyViewModel myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
-        
+        myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
+
         // 从MyViewModel拿出来的数据直接修改，实际上修改的是全局的数据
-        AppSetting globalAppSetting = myViewModel.getAppSetting().getValue();
-
-
+        AppSetting appSettingVM = myViewModel.getAppSetting().getValue();
+        nAppSetting = new AppSetting();
+        if (appSettingVM == null) appSettingVM = myViewModel.getDefaultAppSetting();
         // 加载数据===========================================
-        if (globalAppSetting != null) {
-            loadAppSetting(globalAppSetting);
-            nAppSetting = new AppSetting();
-            nAppSetting.dateTextSize = globalAppSetting.dateTextSize;
-            nAppSetting.weatherTextSize = globalAppSetting.dateTextSize;
-            nAppSetting.clockTextSize = globalAppSetting.clockTextSize;
-            nAppSetting.countDownTextSize = globalAppSetting.countDownTextSize;
-            nAppSetting.eventTextSize = globalAppSetting.eventTextSize;
-            nAppSetting.noteTextSize = globalAppSetting.noteTextSize;
+        loadAppSetting(appSettingVM);
 
-            nAppSetting.setShowSecond(globalAppSetting.isShowSecond());
-            nAppSetting.setShowWeather(globalAppSetting.isShowWeather());
-            nAppSetting.setNightMode(globalAppSetting.isNightMode());
-            nAppSetting.setScreenAlwaysOn(globalAppSetting.isScreenAlwaysOn());
-
-            nAppSetting.setCityCode(globalAppSetting.getCityCode());
-            nAppSetting.setCityName(globalAppSetting.getCityName());
-            nAppSetting.setHeWeatherAPIKey(globalAppSetting.getHeWeatherAPIKey());
-        } else {
-            nAppSetting = myViewModel.getDefaultAppSetting();
-        }
 
         // 监听==============================================
         binding.checkBoxShowSecond.setOnCheckedChangeListener((buttonView, isChecked) -> nAppSetting.setShowSecond(isChecked));
-        binding.checkBoxWeather.setOnCheckedChangeListener((buttonView, isChecked) -> nAppSetting.setShowWeather(isChecked));
+        binding.checkBoxWeather.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            enableWeather(isChecked);
+        });
         binding.checkBoxNgihtMode.setOnCheckedChangeListener((buttonView, isChecked) -> nAppSetting.setNightMode(isChecked));
         binding.checkBoxScreenAlwaysOn.setOnCheckedChangeListener((buttonView, isChecked) -> nAppSetting.setScreenAlwaysOn(isChecked));
-        binding.btnResetAppSetting.setOnClickListener(v-> {
+        binding.btnResetAppSetting.setOnClickListener(v -> {
             loadAppSetting(myViewModel.getDefaultAppSetting());
         });
         binding.etProvince.addTextChangedListener(new TextWatcher() {
@@ -138,7 +141,9 @@ public class SecondFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                nAppSetting.setCityName(s.toString());
+                if (!"".equals(s.toString().trim())) {
+                    nAppSetting.setCityName(s.toString());
+                }
             }
         });
         binding.editTextTextAPIKey.addTextChangedListener(new TextWatcher() {
@@ -154,59 +159,65 @@ public class SecondFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                nAppSetting.setHeWeatherAPIKey(s.toString());
+                if (!"".equals(s.toString().trim())) {
+                    nAppSetting.setHeWeatherAPIKey(s.toString());
+                }
             }
         });
 
 //        final String geoUrl = "http://192.168.2.180:8090/geo";
         // 天气==========================
         binding.btnGetArea.setOnClickListener(v -> {
-            String geoUrl = null;
-            try {
-                geoUrl = MyWeatherUtil.getGeoURL(requireActivity().getApplication(), binding.etProvince.getText().toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(requireActivity(), "尚未配置APIKey，无法请求", Toast.LENGTH_SHORT).show();
+            String pv = binding.etProvince.getText().toString().trim();
+            binding.tvCurrentCity.setText("正在请求省份中...");
+            String key = binding.editTextTextAPIKey.getText().toString().trim();
+            if (pv.length() == 0 || key.length() == 0) {
+                Log.d(TAG, "省份或者APIKey 没输入");
+                binding.tvCurrentCity.setText("省份或者APIKey没填入");
+                Toast.makeText(requireActivity(), "省份或者APIKey没输入", Toast.LENGTH_SHORT).show();
                 return;
             }
+            String geoUrl = MyWeatherUtil.getGeoURL(requireActivity().getApplication(), pv, key);
             RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
             Log.d(TAG, "url=" + geoUrl);
             requestQueue.add(new StringRequest(Request.Method.GET, geoUrl, (Response.Listener<String>) response -> {
                 Gson gson = new Gson();
-                String[] items = new String[]{"没有数据，请更换省份关键词"};
                 MyGeoBean geoBean = gson.fromJson(response, MyGeoBean.class);
-                List<MyGeo> myGeos = null;
                 if ("200".equals(geoBean.code)) {
-                    if (geoBean != null && geoBean.location != null) {
-                        myGeos = geoBean.location;
-                        items = new String[myGeos.size()];
+                    if (geoBean.location != null && geoBean.location.size() != 0) {
+                        List<MyGeo> myGeos = geoBean.location;
+                        String[] items = new String[myGeos.size()];
                         for (int i = 0; i < myGeos.size(); i++) {
                             MyGeo myGeo = geoBean.location.get(i);
-                            items[i] = myGeo.getAdm1() + myGeo.getName();
+                            items[i] = myGeo.getName();
                         }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, items);
+                        binding.spinnerArea.setAdapter(adapter);
+                        binding.spinnerArea.setOnItemSelectedListener(
+                                new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view1, int position, long id) {
+                                        binding.tvCurrentCity.setText(items[position]);
+                                        MyGeo geo = myGeos.get(position);
+                                        nAppSetting.setCityName(geo.getName());
+                                        nAppSetting.setCityCode(geo.getId());
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+                                    }
+                                }
+                        );
+                    } else {
+                        binding.tvCurrentCity.setText("没有该地区的信息");
                     }
+                } else {
+                    binding.tvCurrentCity.setText("请求失败！服务器返回：" + geoBean.code);
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
-                binding.spinnerArea.setAdapter(adapter);
-                String[] finalItems = items;
-                List<MyGeo> finalMyGeos = myGeos;
-                binding.spinnerArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view1, int position, long id) {
-                        binding.tvCurrentCity.setText("当前已选择:" + finalItems[position]);
-                        if (finalMyGeos == null) return;
-                        MyGeo geo = finalMyGeos.get(position);
-                        nAppSetting.setCityName(geo.getName());
-                        nAppSetting.setCityCode(geo.getId());
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
             }, (Response.ErrorListener) error -> {
-
+                binding.tvCurrentCity.setText("网络异常");
+                Log.d(TAG, "网络异常，无法请求地区");
             }));
             requestQueue.start();
         });
@@ -215,28 +226,48 @@ public class SecondFragment extends Fragment {
         // 字体===========================
         class MySeekBarListener implements SeekBar.OnSeekBarChangeListener {
             public String name;
+
             public MySeekBarListener(String name) {
                 this.name = name;
             }
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int val = progress*step + min;
+                int val = progress * step + min;
                 String txt = "预览:" + val;
                 binding.textViewPreview.setText(txt);
                 binding.textViewPreview.setTextSize(val);
                 switch (name) {
-                    case "时钟": nAppSetting.clockTextSize = val; break;
-                    case "倒计时": nAppSetting.countDownTextSize = val; break;
-                    case "事件": nAppSetting.eventTextSize = val; break;
-                    case "日期": nAppSetting.dateTextSize= val; break;
-                    case "天气": nAppSetting.weatherTextSize= val; break;
-                    case "备注": nAppSetting.noteTextSize = val; break;
-                    default:break;
+                    case "时钟":
+                        nAppSetting.clockTextSize = val;
+                        break;
+                    case "倒计时":
+                        nAppSetting.countDownTextSize = val;
+                        break;
+                    case "事件":
+                        nAppSetting.eventTextSize = val;
+                        break;
+                    case "日期":
+                        nAppSetting.dateTextSize = val;
+                        break;
+                    case "天气":
+                        nAppSetting.weatherTextSize = val;
+                        break;
+                    case "备注":
+                        nAppSetting.noteTextSize = val;
+                        break;
+                    default:
+                        break;
                 }
             }
-            @Override public void onStartTrackingTouch(SeekBar seekBar) { }
-            @Override public void onStopTrackingTouch(SeekBar seekBar) { }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         }
         binding.seekBarClockTextSize.setOnSeekBarChangeListener(new MySeekBarListener("时钟"));
         binding.seekBarCountDayTextSize.setOnSeekBarChangeListener(new MySeekBarListener("倒计时"));
@@ -246,18 +277,39 @@ public class SecondFragment extends Fragment {
         binding.seekBarNoteTextSize.setOnSeekBarChangeListener(new MySeekBarListener("备注"));
 
 
-
         // 确认=========================================
+        AppSetting finalAppSettingVM = appSettingVM;
         binding.buttonAppSettingOk.setOnClickListener(view12 -> {
-            myViewModel.updateAPpSetting(nAppSetting);
-            if (nAppSetting.isShowWeather()) {
-                myViewModel.updateWeathers();
+            myViewModel.updateAppSetting(nAppSetting);
+            // 检测地区有没修改，地区修改了并且开启了天气功能，则更新天气
+            if (!Objects.equals(nAppSetting.getCityCode(), finalAppSettingVM.getCityCode())) {
+                if (nAppSetting.isShowWeather()) {
+                    myViewModel.updateWeathers();
+                }
             }
 //                NavHostFragment.findNavController(SecondFragment.this) .navigate(R.id.action_SecondFragment_to_FirstFragment);
             Navigation.findNavController(view12).navigateUp();
         });
 
 
+    }
+
+    private void copyAppSetting(AppSetting as) {
+        nAppSetting.dateTextSize = as.dateTextSize;
+        nAppSetting.weatherTextSize = as.dateTextSize;
+        nAppSetting.clockTextSize = as.clockTextSize;
+        nAppSetting.countDownTextSize = as.countDownTextSize;
+        nAppSetting.eventTextSize = as.eventTextSize;
+        nAppSetting.noteTextSize = as.noteTextSize;
+
+        nAppSetting.setShowSecond(as.isShowSecond());
+        nAppSetting.setShowWeather(as.isShowWeather());
+        nAppSetting.setNightMode(as.isNightMode());
+        nAppSetting.setScreenAlwaysOn(as.isScreenAlwaysOn());
+
+        nAppSetting.setCityCode(as.getCityCode());
+        nAppSetting.setCityName(as.getCityName());
+        nAppSetting.setHeWeatherAPIKey(as.getHeWeatherAPIKey());
     }
 
 

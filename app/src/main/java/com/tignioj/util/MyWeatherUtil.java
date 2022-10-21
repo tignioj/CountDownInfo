@@ -43,6 +43,10 @@ public class MyWeatherUtil {
         return null;
     }
 
+    public static String getGeoURL(Application application, String cityName, String key) {
+        String encode = Uri.encode(cityName);
+        return application.getString(R.string.geoapi) + "/v2/city/lookup?location=" + encode + "&key=" + key;
+    }
     public static String getGeoURL(Application application, String cityName) throws Exception {
         String encode = Uri.encode(cityName);
         if (getAPIKey(application) == null) {

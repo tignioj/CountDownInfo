@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'com.android.application'
 }
@@ -64,6 +66,8 @@ android {
         versionName vName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        android.defaultConfig.vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -71,6 +75,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            applicationVariants.all{
+                variant ->
+                    variant.outputs.each{
+                        output->{
+                            def formattedDate = new Date().format('yyyyMMddHHmmss')
+                            output.outputFileName = formattedDate + "-CountDown-" + "${vName}-release"  +".apk"
+                        }
+                    }
+            }
         }
     }
     compileOptions {

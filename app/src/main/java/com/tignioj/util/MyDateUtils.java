@@ -6,7 +6,8 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class MyDateUtils {
-    public static SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//    public static SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    public static SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     //https://stackoverflow.com/questions/20165564/calculating-days-between-two-dates-with-java
     public static String getDiffDay(Date date1, Date date2) {
@@ -27,4 +28,5 @@ public class MyDateUtils {
         }
         return null;
     }
+
 }

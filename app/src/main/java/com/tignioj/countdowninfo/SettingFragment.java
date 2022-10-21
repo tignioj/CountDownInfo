@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import com.tignioj.countdowninfo.databinding.FragmentFirstBinding;
+import com.tignioj.countdowninfo.databinding.FragmentSettingBinding;
 import com.tignioj.entity.CountDownDay;
 import com.tignioj.util.MyDateUtils;
 import com.tignioj.viewmodel.MyViewModel;
@@ -27,7 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class SettingFragment extends Fragment {
-    private FragmentFirstBinding binding;
+    private FragmentSettingBinding binding;
     MyViewModel myViewModel;
 
 
@@ -48,44 +48,45 @@ public class SettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View inflate = inflater.inflate(R.layout.fragment_setting, container, false);
-        EditText editTextFinalDay = inflate.findViewById(R.id.et_finalday);
-        editTextFinalDay.setOnClickListener(new View.OnClickListener() {
+
+//        View inflate = inflater.inflate(R.layout.fragment_setting, container, false);
+
+        binding = FragmentSettingBinding.inflate(inflater, container, false);
+
+        binding.etFinalday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog(v);
             }
         });
 
+
         LiveData<CountDownDay> countDownDay = myViewModel.getCountDownDay();
         CountDownDay value = countDownDay.getValue();
         newDate  = value.getDate();
         if (newDate != null) {
             String format = MyDateUtils.format(value.getDate());
-            editTextFinalDay.setText(format);
+            binding.etFinalday.setText(format);
         } else {
-            editTextFinalDay.setText("加载日期失败");
+            binding.etFinalday.setText("加载日期失败");
         }
 
-        EditText editTextEvent = inflate.findViewById(R.id.et_event);
-        editTextEvent.setText(value.getEvent());
+        binding.etEvent.setText(value.getEvent());
 
-        EditText editTextNote = inflate.findViewById(R.id.et_note);
-        editTextNote.setText(value.getNote());
+        binding.etNote.setText(value.getNote());
 
-        Button btnOk = inflate.findViewById(R.id.btn_info_ok);
-        btnOk.setOnClickListener(v -> {
+        binding.btnInfoOk.setOnClickListener(v -> {
             CountDownDay cd = new CountDownDay();
-            cd.setEvent(editTextEvent.getText().toString());
-            cd.setNote(editTextNote.getText().toString());
+            cd.setEvent(binding.etEvent.getText().toString());
+            cd.setNote(binding.etNote.getText().toString());
             cd.setDate(newDate);
             myViewModel.updateCountDownDay(cd);
             Navigation.findNavController(v).navigateUp();
         });
-        Button btnNo = inflate.findViewById(R.id.btn_info_cancel);
-        btnNo.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
 
-        return inflate;
+        binding.btnInfoCancel.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
+
+        return binding.getRoot();
     }
 
     public void showDatePickerDialog(View v) {
@@ -94,14 +95,14 @@ public class SettingFragment extends Fragment {
     }
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-        SettingFragment fragment;
+        SettingFragment settingFragment;
         Calendar c;
         Date time;
         SimpleDateFormat sdf = MyDateUtils.myFormat;
         MyViewModel myViewModel;
 
         public DatePickerFragment(SettingFragment fragment) {
-            this.fragment = fragment;
+            this.settingFragment = fragment;
             myViewModel = new ViewModelProvider(fragment).get(MyViewModel.class);
         }
 
@@ -128,7 +129,8 @@ public class SettingFragment extends Fragment {
             c.set(Calendar.YEAR, year);
             c.set(Calendar.MONTH, month);
             c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            fragment.newDate = c.getTime();
+            settingFragment.newDate = c.getTime();
+            settingFragment.binding.etFinalday.setText(MyDateUtils.format(c.getTime()));
         }
     }
 

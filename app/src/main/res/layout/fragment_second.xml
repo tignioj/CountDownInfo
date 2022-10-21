@@ -87,7 +87,7 @@
         android:text="显示秒数"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/checkBoxNgihtMode"
-        app:layout_constraintStart_toStartOf="@+id/spinner_area"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxNgihtMode"
         app:layout_constraintTop_toTopOf="@+id/checkBoxNgihtMode" />
 
     <EditText
@@ -129,7 +129,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="请选择城区"
+        android:text="请输入省份或城区"
         app:layout_constraintStart_toStartOf="@+id/et_province"
         app:layout_constraintTop_toBottomOf="@+id/et_province" />
 
@@ -137,7 +137,7 @@
         android:id="@+id/tv_current_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="当前已选择：未选择"
+        android:text="输入省份后点击获取城区按钮"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/spinner_area"
         app:layout_constraintTop_toTopOf="@+id/textView" />
@@ -249,7 +249,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.59" />
+        app:layout_constraintGuide_percent="0.5" />
 
     <CheckBox
         android:id="@+id/checkBoxNgihtMode"
