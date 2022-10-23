@@ -296,7 +296,7 @@ public class SecondFragment extends Fragment {
 
     private void copyAppSetting(AppSetting as) {
         nAppSetting.dateTextSize = as.dateTextSize;
-        nAppSetting.weatherTextSize = as.dateTextSize;
+        nAppSetting.weatherTextSize = as.weatherTextSize;
         nAppSetting.clockTextSize = as.clockTextSize;
         nAppSetting.countDownTextSize = as.countDownTextSize;
         nAppSetting.eventTextSize = as.eventTextSize;
