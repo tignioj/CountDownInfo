@@ -22,6 +22,14 @@
         android:title="@string/fullscreen"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/app_homepage"
+        android:orderInCategory="100"
+        android:title="@string/app_homepage"
+        app:showAsAction="never" />
+
+
+
 
 
 </menu>

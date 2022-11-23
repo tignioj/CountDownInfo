@@ -1,6 +1,7 @@
 package com.tignioj.countdowninfo;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 
@@ -86,7 +87,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        // 给按钮添加版本号信息
+        MenuItem item = menu.findItem(R.id.app_homepage);
+        item.setTitle(item.getTitle().toString() + BuildConfig.VERSION_NAME);
         return true;
+    }
+
+    void goToHomePage() {
+        String homeUrl = getResources().getString(R.string.app_home_url);
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(homeUrl));
+        startActivity(browserIntent);
     }
 
     @Override
@@ -101,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
         if(id == R.id.full_screen) {
             enterFullScreen();
             return true;
+        }
+        if (id==R.id.app_homepage) {
+            goToHomePage();
         }
 
         return NavigationUI.onNavDestinationSelected(item, navController)

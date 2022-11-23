@@ -23,5 +23,7 @@
     <string name="heweatherapi" translatable="false">https://devapi.qweather.com</string>
 <!--    <string name="heweatherapi">http://192.168.2.180:8090</string>-->
     <string name="geoapi" translatable="false">https://geoapi.qweather.com</string>
-<!--    <string name="geoapi">http://192.168.2.180:8090</string>-->
+    <string name="app_homepage">Home Page</string>
+    <string name="app_home_url" translatable="false">https://github.com/tignioj/CountDownInfo/releases</string>
+    <!--    <string name="geoapi">http://192.168.2.180:8090</string>-->
 </resources>
