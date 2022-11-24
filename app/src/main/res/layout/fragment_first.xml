@@ -29,8 +29,8 @@
 
         android:layout_height="wrap_content"
 
-        android:format12Hour="yyyy-MMM-d EEEE"
-        android:format24Hour="yyyy-MMM-d EEEE"
+        android:format12Hour="yyyy-MM-d E"
+        android:format24Hour="yyyy-MM-d E"
         android:text="2022-10-18"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_event"

@@ -16,10 +16,10 @@
         android:gravity="center_horizontal"
         android:text="00:00:00 早上"
         android:textSize="48sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvDateClock"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_event"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toTopOf="@+id/guideline14" />
+        app:layout_constraintTop_toTopOf="@+id/tv_event" />
 
     <TextClock
         android:id="@+id/tvDateClock"
@@ -27,8 +27,8 @@
 
         android:layout_height="wrap_content"
 
-        android:format12Hour="yyyy-MMM-d EEEE"
-        android:format24Hour="yyyy-MMM-d EEEE"
+        android:format12Hour="yyyy-MM-d E"
+        android:format24Hour="yyyy-MM-d E"
         android:gravity="center_horizontal"
         android:text="2022-10-18"
         android:textSize="24sp"
@@ -54,7 +54,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:hint="天气预报功能\n需要指定和风天气APIKey\n如不需要可在设置关闭"
-        android:paddingLeft="16px"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline11"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
@@ -81,10 +80,11 @@
         android:gravity="center_horizontal"
         android:text="距离XX还有"
         android:textSize="60sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_update_time"
+        app:layout_constraintBottom_toTopOf="@+id/tv_countdown_day"
         app:layout_constraintEnd_toEndOf="@+id/tv_countdown_day"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/tv_update_time" />
+        app:layout_constraintTop_toTopOf="@+id/guideline14" />
 
     <TextView
         android:id="@+id/tv_saying"
