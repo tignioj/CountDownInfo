@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -44,8 +45,8 @@ public class SecondFragment extends Fragment {
     // seekbar参数
     int step = 1;
     int max = 250;
-    int min = 0;
-    int maxval = (max - min) / step;
+    int prograssMin = 0;
+    int progressMax = (max - prograssMin) / step;
 
 
     @Override
@@ -72,19 +73,19 @@ public class SecondFragment extends Fragment {
         binding.editTextTextAPIKey.setText(appSetting.getHeWeatherAPIKey());
 
 
-        binding.seekBarClockTextSize.setMax(maxval);
-        binding.seekBarNoteTextSize.setMax(maxval);
-        binding.seekBarDateTextSize.setMax(maxval);
-        binding.seekBarWeatherTextSize.setMax(maxval);
-        binding.seekBarEventTextSize.setMax(maxval);
-        binding.seekBarCountDayTextSize.setMax(maxval);
+        binding.seekBarClockTextSize.setMax(progressMax);
+//        binding.seekBarNoteTextSize.setMax(maxval);
+//        binding.seekBarDateTextSize.setMax(maxval);
+//        binding.seekBarWeatherTextSize.setMax(maxval);
+//        binding.seekBarEventTextSize.setMax(maxval);
+//        binding.seekBarCountDayTextSize.setMax(maxval);
 
         binding.seekBarClockTextSize.setProgress(appSetting.clockTextSize);
-        binding.seekBarCountDayTextSize.setProgress(appSetting.countDownTextSize);
-        binding.seekBarDateTextSize.setProgress(appSetting.dateTextSize);
-        binding.seekBarWeatherTextSize.setProgress(appSetting.weatherTextSize);
-        binding.seekBarEventTextSize.setProgress(appSetting.eventTextSize);
-        binding.seekBarNoteTextSize.setProgress(appSetting.noteTextSize);
+//        binding.seekBarCountDayTextSize.setProgress(appSetting.countDownTextSize);
+//        binding.seekBarDateTextSize.setProgress(appSetting.dateTextSize);
+//        binding.seekBarWeatherTextSize.setProgress(appSetting.weatherTextSize);
+//        binding.seekBarEventTextSize.setProgress(appSetting.eventTextSize);
+//        binding.seekBarNoteTextSize.setProgress(appSetting.noteTextSize);
 
         if (!nAppSetting.isShowWeather() || Objects.equals(null, nAppSetting.getHeWeatherAPIKey()) || Objects.equals("", nAppSetting.getHeWeatherAPIKey())) {
             enableWeather(false);
@@ -225,40 +226,25 @@ public class SecondFragment extends Fragment {
 
         // 字体===========================
         class MySeekBarListener implements SeekBar.OnSeekBarChangeListener {
-            public String name;
+            public final int radioID;
 
-            public MySeekBarListener(String name) {
-                this.name = name;
+            public MySeekBarListener(int radioId) {
+                this.radioID = radioId;
             }
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int val = progress * step + min;
+                int val = progress * step + prograssMin;
                 String txt = "预览:" + val;
-                binding.textViewPreview.setText(txt);
+//                binding.textViewPreview.setText(txt);
                 binding.textViewPreview.setTextSize(val);
-                switch (name) {
-                    case "时钟":
-                        nAppSetting.clockTextSize = val;
-                        break;
-                    case "倒计时":
-                        nAppSetting.countDownTextSize = val;
-                        break;
-                    case "事件":
-                        nAppSetting.eventTextSize = val;
-                        break;
-                    case "日期":
-                        nAppSetting.dateTextSize = val;
-                        break;
-                    case "天气":
-                        nAppSetting.weatherTextSize = val;
-                        break;
-                    case "备注":
-                        nAppSetting.noteTextSize = val;
-                        break;
-                    default:
-                        break;
-                }
+                binding.textViewFontSize.setText(String.valueOf(val));
+                if (radioID==R.id.radioClock)  nAppSetting.clockTextSize=val;
+                else if (radioID==R.id.radioCountDown) nAppSetting.countDownTextSize=val;
+                else if (radioID==R.id.radioEvent) nAppSetting.eventTextSize=val;
+                else if (radioID==R.id.radioNote) nAppSetting.noteTextSize=val;
+                else if (radioID==R.id.radioDate) nAppSetting.dateTextSize=val;
+                else if (radioID==R.id.radioWeather) nAppSetting.weatherTextSize=val;
             }
 
             @Override
@@ -269,13 +255,34 @@ public class SecondFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         }
-        binding.seekBarClockTextSize.setOnSeekBarChangeListener(new MySeekBarListener("时钟"));
-        binding.seekBarCountDayTextSize.setOnSeekBarChangeListener(new MySeekBarListener("倒计时"));
-        binding.seekBarDateTextSize.setOnSeekBarChangeListener(new MySeekBarListener("日期"));
-        binding.seekBarWeatherTextSize.setOnSeekBarChangeListener(new MySeekBarListener("天气"));
-        binding.seekBarEventTextSize.setOnSeekBarChangeListener(new MySeekBarListener("事件"));
-        binding.seekBarNoteTextSize.setOnSeekBarChangeListener(new MySeekBarListener("备注"));
-
+        binding.radioFontGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int textSize=10;
+                binding.seekBarClockTextSize.setOnSeekBarChangeListener(new MySeekBarListener(checkedId));
+                if (checkedId==R.id.radioClock)  textSize=nAppSetting.clockTextSize;
+                else if (checkedId==R.id.radioCountDown) textSize=nAppSetting.countDownTextSize;
+                else if (checkedId==R.id.radioEvent) textSize=nAppSetting.eventTextSize;
+                else if (checkedId==R.id.radioNote) textSize=nAppSetting.noteTextSize;
+                else if (checkedId==R.id.radioDate) textSize=nAppSetting.dateTextSize;
+                else if (checkedId==R.id.radioWeather) textSize=nAppSetting.weatherTextSize;
+                binding.seekBarClockTextSize.setProgress(textSize);
+            }
+        });
+        binding.buttonFontSizeAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int progress = binding.seekBarClockTextSize.getProgress()+1;
+                if (progress<= progressMax) binding.seekBarClockTextSize.setProgress(progress);
+            }
+        });
+        binding.buttonFontSizeMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int progress = binding.seekBarClockTextSize.getProgress()-1;
+                if (progress>= prograssMin) binding.seekBarClockTextSize.setProgress(progress);
+            }
+        });
 
         // 确认=========================================
         AppSetting finalAppSettingVM = appSettingVM;
